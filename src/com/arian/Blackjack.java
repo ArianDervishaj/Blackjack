@@ -3,56 +3,85 @@ package com.arian;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Blackjack {
     public static void main(String[] args) {
 
-        ArrayList listeToutesCartes = listeToutesCartesGenerateur();
         ArrayList mainJoueur = new ArrayList();
         ArrayList mainOrdi = new ArrayList();
+        mainOrdi.add("MainOrdi");
+        mainJoueur.add("MainJoueur");
 
+        mainOrdi = premierTirage(mainOrdi);
+        mainJoueur = premierTirage(mainJoueur);
+        int pointsJoueur =  calculateurPoints(mainJoueur);
+        int pointsOrdi = calculateurPoints(mainOrdi);
 
-        for (int j =0;j < 10;j++){
-            mainJoueur = tirage(mainJoueur, listeToutesCartes);
+        System.out.println("main joueur : " + mainJoueur + " points joueur : " + pointsJoueur);
+        System.out.println("main ordi : " + mainOrdi + " points ordi : " + pointsOrdi);
+        
 
-        }
-        System.out.println(mainJoueur);
-        System.out.println(listeToutesCartes);
 
 
     }
 
-    public static ArrayList tirage(ArrayList main, ArrayList listeToutesCartes){
-        //Prends en entrée la main du joueur ou l'ordi en ArrayList et la liste de toutes les cartes en Array liste
+    public static ArrayList tirage(ArrayList main){
+        //Prends en entrée la main du joueur ou l'ordi en ArrayList
         //et y ajoute une nouvelle carte dans la main
         //Retourn la nouvelle main en ArrayList
 
         Random random = new Random();
-        int indexCartes = random.nextInt(listeToutesCartes.size()); //
-        main.add(listeToutesCartes.get(indexCartes));
+        int indexCartes = random.nextInt(13); //13 parce que 13 cartes par famille
+        main.add(indexCartes);
 
         return main;
     }
 
-    public static ArrayList listeToutesCartesGenerateur(){
-        //Genere les 52 cartes d'un jeu de cartes, en 4 familles de 13 cartes
+    public static ArrayList premierTirage(ArrayList main){
+        //Prends en entrée 2 ArrayList, la main et la liste des cartes et retourne la main avec les 2 premières cartes
+        //Tire les deux premières cartes de la main
 
-        final int NOMBRECARTESTOTAL = 13;
-
-        ArrayList listeCartesTotales = new ArrayList();
-
-        for(int i=1;i <=NOMBRECARTESTOTAL;i++){
-            listeCartesTotales.add(i);
+        for (int i = 1;i<=2;i++){
+            main = tirage(main);
         }
-        return listeCartesTotales;
+
+        return main;
     }
 
-    public static void premierTirage(ArrayList main, ArrayList listeToutesCartes){
-        for (int i = 0;i<2;i++){
-            main = tirage(main, listeToutesCartes);
+    public static int calculateurPoints(ArrayList main){
+        //Prends en entrée une main et calcule les points de la main
+        //Retourn un int des points
+        
+        Scanner scan = new Scanner(System.in);
+        final int VALEUR_VALET_DAME_ROI = 10;
+        int points = 0;
+
+        for(int i = 1; i < main.size();i++) {
+
+            if (main.get(0) == "MainOrdi" && (int) main.get(i) == 1 && points <= 10) {
+                //Si c'est la main du joueur on donner la valeur de 11 a son as seulement si il a plus de 10 points
+                //lorsqu'il tire la carte.
+
+                int valeurAs = 11;
+                points = points + valeurAs;
+            }
+            else if ( main.get(0) == "MainJoueur" && (int) main.get(i) == 1){
+                //Si c'est la main du joueur on lui dit combien de points il a pour l'instnat et on lui demande si il veut
+                //que son as vaille 1 ou 11 pts
+
+                System.out.println("Vous avez "+points+" points");
+                System.out.print("Voulez vous que votre As compte 1 ou 11pts : ");
+                int valeurAs = scan.nextInt();
+                points = points + valeurAs;
+            }
+            else if ((int) main.get(i) > 10)
+                //Le valet, la dame, le roi (11,12,13) valent 10 pts au blackjack
+
+                points = points + VALEUR_VALET_DAME_ROI;
+            else
+                points = points + (int) main.get(i);
         }
-
-
-
+        return points;
     }
 }
