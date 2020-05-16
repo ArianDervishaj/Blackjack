@@ -13,9 +13,7 @@ public class Blackjack {
 
 
         for (int j =0;j < 5;j++){
-            ArrayList[] mainJoueurEtListeToutesCartes = tirage(mainJoueur, listeToutesCartes);
-            mainJoueur = mainJoueurEtListeToutesCartes[0];
-            listeToutesCartes = mainJoueurEtListeToutesCartes[1];
+            mainJoueur = tirage(mainJoueur, listeToutesCartes);
 
         }
         System.out.println(mainJoueur);
@@ -24,21 +22,16 @@ public class Blackjack {
 
     }
 
-    public static ArrayList[] tirage(ArrayList main, ArrayList listeToutesCartes){
+    public static ArrayList tirage(ArrayList main, ArrayList listeToutesCartes){
         //Prends en entrée la main du joueur ou l'ordi en ArrayList et la liste de toutes les cartes en Array liste
-        //et y ajoute une nouvelle carte dans la main et enleve la carte tirée de la liste de toutes les cartes
-        //Retourne une Array de la nouvelle main en ArrayList et de la nouvelle liste de toutes les cartes en ArrayList
+        //et y ajoute une nouvelle carte dans la main
+        //Retourn la nouvelle main en ArrayList
 
         Random random = new Random();
-
-        int indexCartes = random.nextInt(listeToutesCartes.size()-1);
+        int indexCartes = random.nextInt(listeToutesCartes.size()-1); //
         main.add(listeToutesCartes.get(indexCartes));
-        listeToutesCartes.remove(indexCartes);
 
-        ArrayList[] valeurRetourne = {main, listeToutesCartes};
-        return valeurRetourne ;
-
-
+        return main;
     }
 
     public static ArrayList listeToutesCartesGenerateur(){
@@ -59,9 +52,7 @@ public class Blackjack {
 
     public static void premierTirage(ArrayList main, ArrayList listeToutesCartes){
         for (int i = 0;i<2;i++){
-            ArrayList[] retourner = tirage(main, listeToutesCartes);
-            main = retourner[0];
-            listeToutesCartes = retourner[1];
+            main = tirage(main, listeToutesCartes);
         }
 
 
