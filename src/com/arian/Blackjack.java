@@ -1,6 +1,5 @@
 package com.arian;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -8,6 +7,7 @@ import java.util.Scanner;
 public class Blackjack {
     public static void main(String[] args) {
 
+        Scanner scan = new Scanner(System.in);
         ArrayList mainJoueur = new ArrayList();
         ArrayList mainOrdi = new ArrayList();
         mainOrdi.add("MainOrdi");
@@ -15,15 +15,27 @@ public class Blackjack {
 
         mainOrdi = premierTirage(mainOrdi);
         mainJoueur = premierTirage(mainJoueur);
-        int pointsJoueur =  calculateurPoints(mainJoueur);
         int pointsOrdi = calculateurPoints(mainOrdi);
-
-        System.out.println("main joueur : " + mainJoueur + " points joueur : " + pointsJoueur);
-        System.out.println("main ordi : " + mainOrdi + " points ordi : " + pointsOrdi);
         
+        while(true){
+            System.out.println("\n["+mainOrdi.get(0) +", " + mainOrdi.get(1) + "] nombres de carte : "+ (mainOrdi.size()-1));
+            System.out.println(mainJoueur);
 
+            System.out.print("\nVoulez vous une nouvelle carte (1.Oui 2.Non) : ");
+            int choix = scan.nextInt();
 
-
+            if(choix == 1){
+                mainJoueur = tirage(mainJoueur);
+            }
+            else if(pointsOrdi <= 17){
+                mainOrdi = tirage(mainOrdi);
+                pointsOrdi = calculateurPoints(mainOrdi);
+            }
+            else if(pointsOrdi > 17 && choix == 2){
+                quiVaGagner(mainJoueur,mainOrdi);
+                break;
+            }
+        }
     }
 
     public static ArrayList tirage(ArrayList main){
@@ -32,7 +44,7 @@ public class Blackjack {
         //Retourn la nouvelle main en ArrayList
 
         Random random = new Random();
-        int indexCartes = random.nextInt(13); //13 parce que 13 cartes par famille
+        int indexCartes = 1+random.nextInt(13); //13 parce que 13 cartes par famille et +1 pour que random aille de 1 a 13 pas de 0 a 12
         main.add(indexCartes);
 
         return main;
@@ -70,7 +82,7 @@ public class Blackjack {
                 //Si c'est la main du joueur on lui dit combien de points il a pour l'instnat et on lui demande si il veut
                 //que son as vaille 1 ou 11 pts
 
-                System.out.println("Vous avez "+points+" points");
+                System.out.println(main);
                 System.out.print("Voulez vous que votre As compte 1 ou 11pts : ");
                 int valeurAs = scan.nextInt();
                 points = points + valeurAs;
@@ -83,5 +95,23 @@ public class Blackjack {
                 points = points + (int) main.get(i);
         }
         return points;
+    }
+
+    public static void quiVaGagner(ArrayList mainJoueur, ArrayList mainOrdi){
+        System.out.println("\n"+mainJoueur);
+        System.out.println(mainOrdi);
+        int pointsJoueur = calculateurPoints(mainJoueur);
+        int pointsOrdi = calculateurPoints(mainOrdi);
+
+        if(pointsJoueur > 21 && pointsOrdi > 21)
+            System.out.println("Match nul les deux joueurs ont dépassé 21 points. Vous avez "+pointsJoueur+" et l'ordi a "+pointsOrdi+" points");
+        else if(pointsJoueur > 21)
+            System.out.println("Vous avez perdu! Vous avez "+pointsJoueur+" points et l'ordi a "+pointsOrdi+" points");
+        else if(pointsOrdi > 21)
+            System.out.println("Vous avez gagné!! Vous avez "+pointsJoueur+" points et l'ordi a "+pointsOrdi+" points");
+        else if(pointsJoueur > pointsOrdi)
+            System.out.println("Vous avez gagné!! Vous avez "+pointsJoueur+" points et l'ordi a "+pointsOrdi+" points");
+        else
+            System.out.println("Vous avez perdu! Vous avez "+pointsJoueur+" points et l'ordi a "+pointsOrdi+" points");
     }
 }
