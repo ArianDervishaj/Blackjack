@@ -12,7 +12,7 @@ public class Blackjack {
         ArrayList mainOrdi = new ArrayList();
 
 
-        for (int j =0;j < 5;j++){
+        for (int j =0;j < 10;j++){
             mainJoueur = tirage(mainJoueur, listeToutesCartes);
 
         }
@@ -28,7 +28,7 @@ public class Blackjack {
         //Retourn la nouvelle main en ArrayList
 
         Random random = new Random();
-        int indexCartes = random.nextInt(listeToutesCartes.size()-1); //
+        int indexCartes = random.nextInt(listeToutesCartes.size()); //
         main.add(listeToutesCartes.get(indexCartes));
 
         return main;
@@ -37,15 +37,12 @@ public class Blackjack {
     public static ArrayList listeToutesCartesGenerateur(){
         //Genere les 52 cartes d'un jeu de cartes, en 4 familles de 13 cartes
 
-        final int NOMBRECARTESPARFAMILLE = 13;
-        final int NOMBRECARTESTOTAL = 52;
-        final int DECALAGE = 1;
+        final int NOMBRECARTESTOTAL = 13;
 
         ArrayList listeCartesTotales = new ArrayList();
 
-        for(int i=0;i <NOMBRECARTESTOTAL;i++){
-            int numeroCartes = i % NOMBRECARTESPARFAMILLE + DECALAGE;
-            listeCartesTotales.add(numeroCartes);
+        for(int i=1;i <=NOMBRECARTESTOTAL;i++){
+            listeCartesTotales.add(i);
         }
         return listeCartesTotales;
     }
